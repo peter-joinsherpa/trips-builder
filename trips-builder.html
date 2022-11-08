@@ -38,6 +38,12 @@
     <div class="row">
         <div class="col-sm-6" >
 
+            <label for="environment" class="form-label">Environment:</label>
+            <select class="form-select" id="environment" name="environment" onchange="generateRequest('environment')">
+                <option value="sandbox">Sandbox</option>
+                <option value="production">Production</option>
+            </select>
+            <br />            
             <label for="version" class="form-label">Trips Version:</label>
             <select class="form-select" id="version" name="version" onchange="generateRequest('version')">
                 <option value="v2">v2</option>

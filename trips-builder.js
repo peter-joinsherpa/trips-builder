@@ -1,9 +1,18 @@
-// Trips v2 Request template
-const v2requestHeader = `POST https://requirements-api.sandbox.joinsherpa.com/v2/trips?include=procedure,restriction&language=en-US&affiliateId=sherpa&key={{API-KEY}}
-content-type: application/json
-`;
-
-const v2requestBody = `{
+// Host Environment
+const config = {
+    "host": {
+        "sandbox": "https://requirements-api.sandbox.joinsherpa.com",
+        "production": "https://requirements-api.joinsherpa.com"
+    },
+    "requestHeaderFormatted": {
+        "v2": `POST {{HOST}}/v2/trips?include=procedure,restriction&language=en-US&affiliateId=sherpa&key={{API-KEY}}
+content-type: application/json`,
+        "v3": `POST {{HOST}}/v3/trips
+content-type: application/vnd.api+json
+x-api-key: {{API-KEY}}`
+    },
+    "requestBody": {
+        "v2": `{
     "data": {
         "type": "TRIP",
         "attributes": {
@@ -36,10 +45,9 @@ const v2requestBody = `{
             ]
         }
     }
-}`;
-
-// Trips v3 Request template
-const v3requestBody = `{
+}`,
+        
+        "v3": `{
     "data": {
         "type": "TRIP",
         "attributes": {
@@ -76,13 +84,9 @@ const v3requestBody = `{
             ]
         }
     }
-}`;    
-
-// Trips v2 Request template
-const v3requestHeader = `POST https://requirements-api.sandbox.joinsherpa.com/v3/trips
-content-type: application/vnd.api+json
-x-api-key: {{API-KEY}}
-`;
+}`
+    }
+};
 
 // Replace text        
 function replaceText(text, searchValue, newValue, isHighlight = false) {
@@ -105,6 +109,7 @@ function replaceText(text, searchValue, newValue, isHighlight = false) {
 function generateRequest(idName) {
 
     let version = document.getElementById("version").value;
+    let environment = document.getElementById("environment").value;
     let passport = document.getElementById("passport").value;
     let vaccination = document.getElementById("vaccination").value;
     let originArray = document.getElementById("origin").value.split("-");
@@ -116,13 +121,12 @@ function generateRequest(idName) {
 
     try {
 
-        if (version == 'v2') {
-            request = v2requestBody;
-            requestHeaderFormatted = v2requestHeader;
-        } else {
-            request = v3requestBody;
-            requestHeaderFormatted = v3requestHeader;
-        }
+        request = config.requestBody[version];
+        requestHeaderFormatted = config.requestHeaderFormatted[version];
+
+// Host Environment
+        requestHeaderFormatted = (idName == 'environment') ? replaceText(requestHeaderFormatted,"{{HOST}}", config.host[environment], true)
+        : replaceText(requestHeaderFormatted,"{{HOST}}", config.host[environment]);
 
 // Populate Request Object
         request = request.replace("{{DEPARTURE_DATE}}", responseDate);
@@ -229,16 +233,17 @@ async function submitRequest() {
         document.getElementById('apikey').style.borderColor = '';
     }
 
-    let version = document.getElementById("version").value;            
+    let version = document.getElementById("version").value;
+    let environment = document.getElementById("environment").value;
     let myHeaders = new Headers();
     let apiEndpoint = "";
-
+        
     if (version == 'v2') { 
-        apiEndpoint = "https://requirements-api.sandbox.joinsherpa.com/v2/trips?include=procedure,restriction&language=en-US&affiliateId=test1&key=" + document.getElementById("apikey").value;
+        apiEndpoint = config.host[environment] + "/v2/trips?include=procedure,restriction&language=en-US&affiliateId=test1&key=" + document.getElementById("apikey").value;
         myHeaders.append("content-type", "application/json");
 
     } else { //v3
-        apiEndpoint = "https://requirements-api.sandbox.joinsherpa.com/v3/trips";
+        apiEndpoint = config.host[environment] + "/v3/trips";
         myHeaders.append("content-type", "application/vnd.api+json");
         myHeaders.append("x-api-key", document.getElementById("apikey").value);
     }
