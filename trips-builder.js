@@ -318,7 +318,8 @@ async function processResponse(json, version) {
 
                     let includedResults = searchIncluded(json.included, included.id, version);
                     results.visas += `${included.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
-                    
+                    results.visas += (includedResults.documentLinks) ? includedResults.documentLinks : includedResults.sourceLink;
+                  
                 });
             }
 
@@ -347,7 +348,8 @@ async function processResponse(json, version) {
 
                         let includedResults = searchIncluded(json.included, data.id, version);
                         results.visas += `${data.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
-                        
+                        results.visas += (includedResults.documentLinks) ? includedResults.documentLinks : includedResults.sourceLink;
+
                     });
                 });
             }
@@ -363,7 +365,7 @@ async function processResponse(json, version) {
 function searchIncluded(includedArray, id, version) {
 
     let results = {};
-    
+
     for (let included of includedArray) {
         if (included.id == id) {
             results.title = included.attributes.title;
@@ -373,12 +375,26 @@ function searchIncluded(includedArray, id, version) {
             if (version == 'v2') { 
 
                 results.country = included.attributes.country;
+                results.sourceLink = included.attributes.source.url;
+
+                if (Array.isArray(included.attributes.documentLinks) && included.attributes.documentLinks.length) {
+                    results.documentLinks = included.attributes.documentLinks[0].url;
+                } else {
+                    results.documentLinks = "";
+                }
 
             } else { //v3
 
                 results.country = included.relationships.location.data.id;
+                results.sourceLink = included.attributes.sources[0].url;
 
+                if (Array.isArray(included.attributes.actions) && included.attributes.actions.length) {
+                    results.documentLinks = included.attributes.actions[0].url;
+                } else {
+                    results.documentLinks = "";
+                }
             }
+
             break;
         }
     }
