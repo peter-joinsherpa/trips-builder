@@ -224,6 +224,8 @@ function generateRequest(idName) {
 // Post request to Trips Endpoint if API-KEY provided   
 async function submitRequest() {
 
+    document.body.style.cursor = 'wait';
+
     if (!document.getElementById("apikey").value) {
 
         document.getElementById('apikey').style.borderColor = 'red';
@@ -283,6 +285,8 @@ async function submitRequest() {
         document.getElementById("textarea_response_formatted").innerHTML = responseFormatted.replace(/[\r\n]+/g,"<br>").replaceAll("  ","&nbsp;&nbsp;"); // newlines and indents;
 
     }
+
+    document.body.style.cursor = 'default';
 
 }
 
