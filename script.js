@@ -212,7 +212,7 @@ function generateRequest(idName) {
         responseElements.forEach(element => {
             element.value = "";
         });
-
+        document.getElementById("textarea_response_formatted").innerHTML = "";
 
     } catch(err) {
 
@@ -262,12 +262,36 @@ async function submitRequest() {
 
         let results = await processResponse(jsonResults, version);
 
+// Populate Results        
         document.getElementById("response-headline").value = results.headline;
         document.getElementById("response-destination_travel_restrictions").value = results.destinationTravelRestrictions;
         document.getElementById("response-visas").value = results.visas;
 
+
+// Populate Response textarea        
+        //let responseFormatted = JSON.stringify(jsonResults, null, 4).replace(/[\r\n]+/g,"<br>").replaceAll("  ","&nbsp;&nbsp;"); // newlines and indents
+        let responseFormatted = JSON.stringify(jsonResults, null, 4); // newlines and indents
+        responseFormatted = highlightLine(responseFormatted, "\"version\":", "highlight");
+        responseFormatted = highlightLine(responseFormatted, results.headline, "highlight_headline");        
+        for (const id of results.destinationTravelRestrictionsIds){
+            responseFormatted = highlightLine(responseFormatted, id, "highlight_destinationTravelRestrictions");
+        }
+        for (const id of results.visasIds){
+            responseFormatted = highlightLine(responseFormatted, id, "highlight_visas");
+        }        
+
+        document.getElementById("textarea_response_formatted").innerHTML = responseFormatted.replace(/[\r\n]+/g,"<br>").replaceAll("  ","&nbsp;&nbsp;"); // newlines and indents;
+
     }
 
+}
+
+function highlightLine(jsonString, searchFor, className="highlight") {
+    var regex = new RegExp('(.*' + searchFor + '.*)', 'g');
+    var highlighted = `<span class="${className}">$1</span>`;
+    var newJsonString = jsonString.replace(regex, highlighted);
+
+    return newJsonString;
 }
 
 // Post request to Trips Endpoint if API-KEY provided   
@@ -276,14 +300,15 @@ async function callApiAsync(apiEndpoint, requestOptions, version) {
     let response = await fetch(apiEndpoint, requestOptions);
     let json = await response.json();
 
+
     if (response.ok) { // Success
 
-        document.getElementById("response-textarea").value = JSON.stringify(json, null, 2);
         return json;
 
     } else { //Error
 
-        document.getElementById("response-textarea").value = `${json.message} (${response.status})`;
+        //document.getElementById("response-textarea").value = `${json.message} (${response.status})`;
+        document.getElementById("textarea_response_formatted").innerHTML = `${json.message} (${response.status})`;
         return false;
     }
 
@@ -295,7 +320,9 @@ async function processResponse(json, version) {
     let results = {
         headline: "",
         destinationTravelRestrictions: "",
-        visas: ""
+        destinationTravelRestrictionsIds: [],
+        visas: "",
+        visasIds: []
     };
 
     if (version == 'v2') { 
@@ -309,6 +336,7 @@ async function processResponse(json, version) {
 
                     let includedResults = searchIncluded(json.included, included.id, version);
                     results.destinationTravelRestrictions += `${included.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
+                    results.destinationTravelRestrictionsIds.push(included.id);
 
                 });
             }
@@ -319,7 +347,8 @@ async function processResponse(json, version) {
                     let includedResults = searchIncluded(json.included, included.id, version);
                     results.visas += `${included.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
                     results.visas += (includedResults.documentLinks) ? includedResults.documentLinks : includedResults.sourceLink;
-                  
+                    results.visasIds.push(included.id);                  
+
                 });
             }
 
@@ -337,6 +366,7 @@ async function processResponse(json, version) {
 
                         let includedResults = searchIncluded(json.included, data.id, version);
                         results.destinationTravelRestrictions += `${data.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
+                        results.destinationTravelRestrictionsIds.push(data.id);
 
                     });
                 });
@@ -349,6 +379,7 @@ async function processResponse(json, version) {
                         let includedResults = searchIncluded(json.included, data.id, version);
                         results.visas += `${data.id} : ${includedResults.title} (${includedResults.country}|${includedResults.enforcement})\n`;
                         results.visas += (includedResults.documentLinks) ? includedResults.documentLinks : includedResults.sourceLink;
+                        results.visasIds.push(data.id);  
 
                     });
                 });

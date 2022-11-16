@@ -8,11 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="trips-builder.js"></script> 
-    <link href="trips-builder.css" rel="stylesheet">
+    <script src="script.js"></script> 
+    <link href="styles.css" rel="stylesheet">
 
 </head>
-<body>
+<body onload="generateRequest('version')">
 
 <div class="container-fluid p-5 bg-primary text-white text-center">
   <h1>Sherpaº Trips Builder</h1>
@@ -41,7 +41,7 @@
             <label for="environment" class="form-label">Environment:</label>
             <select class="form-select" id="environment" name="environment" onchange="generateRequest('environment')">
                 <option value="sandbox">Sandbox</option>
-                <option value="production">Production</option>
+                <!-- <option value="production">Production</option> -->
             </select>
             <br />            
             <label for="version" class="form-label">Trips Version:</label>
@@ -90,7 +90,7 @@
 <!-- Request Textarea -->        
         <div class="col-sm-6" >
 
-            <div id="textarea_request_formatted" class="textarea"></div>
+            <div id="textarea_request_formatted" class="textarea_request"></div>
             <textarea class="form-control" id="textarea_request_body" name="textarea_request_body" rows="5" style="font-size: .75rem; display: none;"></textarea>
 
         </div>
@@ -131,21 +131,21 @@
 
         <div class="col-sm-6" >
 
-            <label for="response-headline" class="form-label">Headline:</label>
+            <label for="response-headline" class="form-label">Headline:</label> <span class="highlight_headline">text</span>
             <input class="form-control form-control-sm" id="response-headline" type="text" readonly>
 
-            <label for="response-destination_travel_restrictions" class="form-label">Destination Travel Restrictions:</label>
+            <label for="response-destination_travel_restrictions" class="form-label">Destination Travel Restrictions:</label>  <span class="highlight_destinationTravelRestrictions">text</span>
             <textarea class="form-control form-control-sm" id="response-destination_travel_restrictions" rows="3" style="font-size: .75rem;" readonly></textarea>
 
-            <label for="response-visas" class="form-label">Visa Information:</label>
+            <label for="response-visas" class="form-label">Visa Information:</label> <span class="highlight_visas">text</span>
             <textarea class="form-control form-control-sm" id="response-visas" rows="3" style="font-size: .75rem;" readonly></textarea>
             
         </div>
 
         <div class="col-sm-6">
-            
-            <textarea class="form-control" id="response-textarea" name="response-textarea" rows="10" style="height:100%; font-size: .75rem;" readonly></textarea>
 
+            <div id="textarea_response_formatted" class="textarea_response"></div>
+            <!-- <textarea class="form-control" id="response-textarea" name="response-textarea" rows="10" style="height:100%; font-size: .75rem;" readonly></textarea> -->
         </div>
 
     </div>    
