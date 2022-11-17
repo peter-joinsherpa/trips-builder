@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="script.js"></script> 
+    <script src="config.js"></script> 
     <link href="styles.css" rel="stylesheet">
 
 </head>
@@ -18,14 +19,14 @@
   <h1>Sherpaº Trips Builder</h1>
 </div>
  
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <h3>Input Parameters</h3>    
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             <h3>Request</h3>    
         </div>        
     </div>
@@ -36,7 +37,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-6" >
+        <div class="col-sm-5" >
 
             <label for="environment" class="form-label">Environment:</label>
             <select class="form-select" id="environment" name="environment" onchange="generateRequest('environment')">
@@ -88,7 +89,7 @@
         </div>
 
 <!-- Request Textarea -->        
-        <div class="col-sm-6" >
+        <div class="col-sm-7" >
 
             <div id="textarea_request_formatted" class="textarea_request"></div>
             <textarea class="form-control" id="textarea_request_body" name="textarea_request_body" rows="5" style="font-size: .75rem; display: none;"></textarea>
@@ -104,24 +105,24 @@
 <!-- Submit Request -->       
     <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <input class="form-control" id="apikey" name="apikey" type="text" placeholder="API Key" onchange="generateRequest('apikey')">
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             <button type="button" class="btn btn-primary" id="btnSubmitRequest" disabled onclick="submitRequest()">Submit Request >></button>    
         </div>        
 
     </div>
 </div>
 <!-- Response/Results -->    
-<div class="container mt-5 bg-light">
+<div class="container-fluid mt-5 bg-light">
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <h3>Results</h3>    
         </div>        
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             <h3>Response</h3>    
         </div>
   
@@ -129,7 +130,7 @@
 
     <div class="row">
 
-        <div class="col-sm-6" >
+        <div class="col-sm-5" >
 
             <label for="response-headline" class="form-label">Headline:</label> <span id="node_headline" class="highlight_headline highlight_text_sm"></span>
             <input class="form-control form-control-sm" id="response-headline" type="text" readonly>
@@ -142,7 +143,7 @@
             
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-7">
 
             <div id="textarea_response_formatted" class="textarea_response"></div>
 
