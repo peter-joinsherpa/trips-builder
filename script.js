@@ -207,7 +207,6 @@ function generateRequest(idName) {
         document.getElementById("btnSubmitRequest").disabled = (requestFormatted.indexOf('{{') !== -1) ? true : false;
 
 // Clear Response Text
-
         const responseElements = document.querySelectorAll(`[id^="response-"]`);
         responseElements.forEach(element => {
             element.value = "";
@@ -264,9 +263,20 @@ async function submitRequest() {
 
         let results = await processResponse(jsonResults, version);
 
-// Populate Results        
+// Populate Results
+        document.getElementById("node_headline").innerHTML = (version == 'v2') 
+            ? "data.attributes.segments[].summary.headline" 
+            : "data.attributes.headline";
         document.getElementById("response-headline").value = results.headline;
+
+        document.getElementById("node_destinationTravelRestrictions").innerHTML = (version == 'v2') 
+            ? "data.attributes.segments[].summary.groupings[].type = DESTINATION_TRAVEL_RESTRICTIONS" 
+            : "data.attributes.informationGroups[].type = TRAVEL_RESTRICTIONS";
         document.getElementById("response-destination_travel_restrictions").value = results.destinationTravelRestrictions;
+
+        document.getElementById("node_visas").innerHTML = (version == 'v2') 
+            ? "data.attributes.segments[].summary.groupings[].type = VISAS" 
+            : "data.attributes.informationGroups[].type = VISA_REQUIREMENTS";
         document.getElementById("response-visas").value = results.visas;
 
 

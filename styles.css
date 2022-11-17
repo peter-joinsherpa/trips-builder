@@ -26,6 +26,13 @@
     font-weight: bold;
 }
 
+.highlight_text_sm {
+    font-size: 0.75em;    
+}
+
+.nowrap {
+    white-space: nowrap;
+}
 .highlight_parameter {
     color: black;
     background-color: yellow;
@@ -47,4 +54,5 @@
     color: white;
     background-color: lightseagreen;
     font-weight: bold;
-} 
+}
+ 
