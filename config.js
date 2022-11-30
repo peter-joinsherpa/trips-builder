@@ -4,12 +4,12 @@ const config = {
         "production": "https://requirements-api.joinsherpa.com"
     },
     "requestHeaderFormatted": {
-        "v2": `POST {{HOST}}/v2/trips?include=procedure,restriction&language=en-US&affiliateId=sherpa&key={{API-KEY}}
-content-type: application/json`,
-        "v3": `POST {{HOST}}/v3/trips?include=procedure,restriction
-content-type: application/vnd.api+json
-x-api-key: {{API-KEY}}`
-    },
+        "v2": `curl --location --request POST '{{HOST}}/v2/trips?include=procedure,restriction&language=en-US&affiliateId=sherpa&key={{API-KEY}}' \\
+--header 'content-type: application/json' \\`,
+        "v3": `curl --location --request POST '{{HOST}}/v3/trips?include=procedure,restriction' \\
+--header 'content-type: application/vnd.api+json' \\
+--header 'x-api-key: AIzaSyAqD2UB9rjUl0A2jvh_xiiKsJowbc7-eM8' \\`
+    },    
     "requestBody": {
         "v2": `{
     "data": {

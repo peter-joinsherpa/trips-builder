@@ -44,7 +44,7 @@ function generateRequest(idName) {
         request = request.replace("{{DEPARTURE_DATE}}", responseDate);
         request = request.replace("{{ARRIVAL_DATE}}", responseDate);
 
-        let requestFormatted = `${requestHeaderFormatted}<br><br>${request}`;
+        let requestFormatted = `${requestHeaderFormatted}<br><br>--data-raw '<br>${request}'`;
 
         request = replaceText(request,"{{VACCINATION}}", vaccination);
         requestFormatted = (idName == 'vaccination') ? replaceText(requestFormatted,"{{VACCINATION}}", vaccination, true)
@@ -357,4 +357,14 @@ function searchIncluded(includedArray, id, version) {
     }
 
     return results;
+}
+
+// Copy content of element/id to clipboard
+function copyToClipboard(id) {
+    var range = document.createRange();
+    range.selectNode(document.getElementById(id));
+    window.getSelection().removeAllRanges(); // clear current selection
+    window.getSelection().addRange(range); // to select text
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();// to deselect
 }
