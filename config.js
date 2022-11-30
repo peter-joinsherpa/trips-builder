@@ -8,7 +8,7 @@ const config = {
 --header 'content-type: application/json' \\`,
         "v3": `curl --location --request POST '{{HOST}}/v3/trips?include=procedure,restriction' \\
 --header 'content-type: application/vnd.api+json' \\
---header 'x-api-key: AIzaSyAqD2UB9rjUl0A2jvh_xiiKsJowbc7-eM8' \\`
+--header 'x-api-key: {{API-KEY}}' \\`
     },    
     "requestBody": {
         "v2": `{
