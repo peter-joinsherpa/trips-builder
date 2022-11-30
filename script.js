@@ -156,7 +156,7 @@ async function submitRequest() {
         myHeaders.append("content-type", "application/json");
 
     } else { //v3
-        apiEndpoint = config.host[environment] + "/v3/trips";
+        apiEndpoint = config.host[environment] + "/v3/trips?include=procedure,restriction";
         myHeaders.append("content-type", "application/vnd.api+json");
         myHeaders.append("x-api-key", document.getElementById("apikey").value);
     }

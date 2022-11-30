@@ -6,7 +6,7 @@ const config = {
     "requestHeaderFormatted": {
         "v2": `POST {{HOST}}/v2/trips?include=procedure,restriction&language=en-US&affiliateId=sherpa&key={{API-KEY}}
 content-type: application/json`,
-        "v3": `POST {{HOST}}/v3/trips
+        "v3": `POST {{HOST}}/v3/trips?include=procedure,restriction
 content-type: application/vnd.api+json
 x-api-key: {{API-KEY}}`
     },
